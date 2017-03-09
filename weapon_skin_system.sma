@@ -4,7 +4,7 @@
 #include <hamsandwich>
 
 #define PLUGIN "Weapon Skin System"
-#define VERSION "0.6.0-50"
+#define VERSION "0.6.0-51"
 #define AUTHOR "Mistrick"
 
 #pragma semicolon 1
@@ -97,7 +97,7 @@ public plugin_init()
 
 RegisterWeapons()
 {
-	for(new i = CSW_P228, weapon_name[32]; i < CSW_P90; i++)
+	for(new i = CSW_P228, weapon_name[32]; i <= CSW_P90; i++)
 	{
 		if(get_weaponname(i, weapon_name, charsmax(weapon_name)))
 		{
