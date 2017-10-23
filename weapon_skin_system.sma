@@ -4,7 +4,7 @@
 #include <hamsandwich>
 
 #define PLUGIN "Weapon Skin System"
-#define VERSION "0.6.0-51"
+#define VERSION "0.6.0-52"
 #define AUTHOR "Mistrick"
 
 #pragma semicolon 1
@@ -422,7 +422,6 @@ public CWeaponBox__Touch(ent, id)
 
 		if(is_valid_pev(weapon))
 		{
-			new id = pev(ent, pev_owner);
 			new weaponid = get_pdata_int(weapon, m_iId, XO_CBASEPLAYERWEAPON);
 
 			new skin = get_weapon_skin(weapon);
