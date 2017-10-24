@@ -25,7 +25,7 @@ enum
  * @param weaponid					Skin CSW_ const
  * @param name						Skin name
  */
-forward wss_loaded_skin(index, weaponid, name[]);
+forward wss_loaded_skin(index, weaponid, const name[]);
 
 /**
  * Get weapon skin.
