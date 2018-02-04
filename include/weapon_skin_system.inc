@@ -30,9 +30,32 @@ forward wss_loaded_skin(index, weaponid, const name[]);
 /**
  * Get weapon skin.
  * 
+ * @note Should call in plugin_precache()
+ *
+ * @param weaponid					Skin CSW_ const
+ * @param skinname					Skin name
+ * @param model_v					Skin model_v
+ * @param model_p					Skin model_p
+ * @param model_w					Skin model_w
+ *
+ * @return							Skin index
+ */
+native wss_register_weapon(weaponid, skinname[], model_v[], model_p[], model_w[]);
+
+/**
+ * Get weapon skin.
+ * 
  * @param weapon					Weapon enity index
  */
 native wss_get_weapon_skin_index(weapon);
+
+/**
+ * Set weapon skin.
+ * 
+ * @param weapon					Weapon enity index
+ * @param skin						Weapon skin index
+ */
+native wss_set_weapon_skin_index(weapon, skin);
 
 /**
  * Get skin name by index.
@@ -77,7 +100,7 @@ forward wss_weapon_deploy(id, weapon, weaponid, skin);
 forward wss_weapon_holster(id, weapon, weaponid, skin);
 
 /**
- * Called when weapon droped.
+ * Called when player touches weapon.
  * Forward should return WEAPON_BLOCK_PICKUP for block pickup
  * 
  * @param id					Player index.

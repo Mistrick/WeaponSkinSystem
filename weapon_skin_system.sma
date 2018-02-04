@@ -4,7 +4,7 @@
 #include <hamsandwich>
 
 #define PLUGIN "Weapon Skin System"
-#define VERSION "0.6.0-52"
+#define VERSION "0.7.0-55"
 #define AUTHOR "Mistrick"
 
 #pragma semicolon 1
@@ -189,9 +189,56 @@ public plugin_precache()
 public plugin_natives()
 {
 	register_library("weapon_skin_system");
+	register_native("wss_register_weapon", "native_register_weapon");
 	register_native("wss_get_weapon_skin_index", "native_get_weapon_skin_index");
+	register_native("wss_set_weapon_skin_index", "native_set_weapon_skin_index");
 	register_native("wss_get_skin_name", "native_get_skin_name");
 	register_native("wss_set_user_skin", "native_set_user_skin");
+}
+
+// TODO: add call forward?
+// native wss_register_weapon(weaponid, skinname[], model_v[], model_p[], model_w[]);
+public native_register_weapon(plugin, params)
+{
+	enum {
+		arg_weaponid = 1,
+		arg_skinname,
+		arg_model_v,
+		arg_model_p,
+		arg_model_w
+	};
+
+	new skin_info[SkinInfo], model[64];
+	skin_info[WeaponID] = get_param(arg_weaponid);
+
+	g_LoadedWeapons |= (1 << skin_info[WeaponID]);
+
+	get_string(arg_model_v, model, charsmax(model));
+	if(model[0] && file_exists(model))
+	{
+		skin_info[ModelV] = engfunc(EngFunc_AllocString, model);
+		precache_model(model);
+	}
+	get_string(arg_model_p, model, charsmax(model));
+	if(model[0] && file_exists(model))
+	{
+		skin_info[ModelP] = engfunc(EngFunc_AllocString, model);
+		precache_model(model);
+	}
+	get_string(arg_model_w, model, charsmax(model));
+	if(model[0] && file_exists(model))
+	{
+		copy(skin_info[ModelW], charsmax(skin_info[ModelW]), model);
+		precache_model(model);
+	}
+	get_string(arg_skinname, skin_info[SkinName], charsmax(skin_info[SkinName]));
+
+	// ExecuteForward(fwd, ret, g_iWeaponSkinsCount + 1, weaponid, skin_name);
+
+	ArrayPushArray(g_aWeaponSkins, skin_info);
+	g_iWeaponSkinsCount++;
+
+	return g_iWeaponSkinsCount;
 }
 
 // native wss_get_weapon_skin_index(weapon);
@@ -202,6 +249,17 @@ public native_get_weapon_skin_index(plugin, params)
 	new weapon = get_param(arg_weapon);
 
 	return get_weapon_skin(weapon);
+}
+
+// native wss_set_weapon_skin_index(weapon);
+public native_set_weapon_skin_index(plugin, params)
+{
+	enum {
+		arg_weapon = 1,
+		arg_skin
+	};
+	
+	set_weapon_skin(get_param(arg_weapon), get_param(arg_skin));
 }
 
 // native wss_get_skin_name(skin, name[], len);
